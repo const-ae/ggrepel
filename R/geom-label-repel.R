@@ -86,7 +86,7 @@ GeomLabelRepel <- ggproto(
   default_aes = aes(
     colour = "black", fill = "white", size = 3.88, angle = 0,
     alpha = NA, family = "", fontface = 1, lineheight = 1.2,
-    hjust = 0.5, vjust = 0.5, segment.colour = NULL
+    hjust = 0.5, vjust = 0.5, segment.colour = NULL, text.colour= NULL
   ),
 
   draw_panel = function(
@@ -277,7 +277,7 @@ makeContent.labelrepeltree <- function(x) {
       point.padding = x$point.padding,
       r = x$label.r,
       text.gp = gpar(
-        col = scales::alpha(row$colour, row$alpha),
+        col = scales::alpha(row$text.colour %||% row$colour, row$alpha),
         fontsize = row$size * .pt,
         fontfamily = row$family,
         fontface = row$fontface,
