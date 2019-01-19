@@ -16,8 +16,6 @@ geom_label_repel <- function(
   point.padding = 1e-6,
   label.r = 0.15,
   label.size = 0.25,
-  segment.colour = NULL,
-  segment.color = NULL,
   segment.size = 0.5,
   segment.alpha = NULL,
   min.segment.length = 0.5,
@@ -56,7 +54,7 @@ geom_label_repel <- function(
       point.padding  = to_unit(point.padding),
       label.r = to_unit(label.r),
       label.size = label.size,
-      segment.colour = segment.color %||% segment.colour,
+      # segment.colour = segment.color %||% segment.colour,
       segment.size = segment.size,
       segment.alpha = segment.alpha,
       min.segment.length = to_unit(min.segment.length),
@@ -88,7 +86,7 @@ GeomLabelRepel <- ggproto(
   default_aes = aes(
     colour = "black", fill = "white", size = 3.88, angle = 0,
     alpha = NA, family = "", fontface = 1, lineheight = 1.2,
-    hjust = 0.5, vjust = 0.5
+    hjust = 0.5, vjust = 0.5, segment.colour = NULL
   ),
 
   draw_panel = function(
@@ -100,7 +98,6 @@ GeomLabelRepel <- ggproto(
     point.padding = 1e-6,
     label.r = 0.15,
     label.size = 0.25,
-    segment.colour = NULL,
     segment.size = 0.5,
     segment.alpha = NULL,
     min.segment.length = 0.5,
@@ -163,7 +160,6 @@ GeomLabelRepel <- ggproto(
       point.padding = to_unit(point.padding),
       label.r = to_unit(label.r),
       label.size = label.size,
-      segment.colour = segment.colour,
       segment.size = segment.size,
       segment.alpha = segment.alpha,
       min.segment.length = to_unit(min.segment.length),
@@ -293,7 +289,7 @@ makeContent.labelrepeltree <- function(x) {
         lwd = x$label.size * .pt
       ),
       segment.gp = gpar(
-        col = scales::alpha(x$segment.colour %||% row$colour, x$segment.alpha %||% row$alpha),
+        col = scales::alpha(row$segment.colour %||% row$colour, x$segment.alpha %||% row$alpha),
         lwd = x$segment.size * .pt
       ),
       arrow = x$arrow,
