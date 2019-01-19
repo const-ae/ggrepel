@@ -8,12 +8,12 @@
 geom_label_repel(mapping = NULL, data = NULL, stat = "identity",
   position = "identity", parse = FALSE, ..., box.padding = 0.25,
   label.padding = 0.25, point.padding = 1e-06, label.r = 0.15,
-  label.size = 0.25, segment.colour = NULL, segment.color = NULL,
-  segment.size = 0.5, segment.alpha = NULL, min.segment.length = 0.5,
-  arrow = NULL, force = 1, force_pull = 1, max.iter = 2000,
-  nudge_x = 0, nudge_y = 0, xlim = c(NA, NA), ylim = c(NA, NA),
-  na.rm = FALSE, show.legend = NA, direction = c("both", "y", "x"),
-  seed = NA, inherit.aes = TRUE)
+  label.size = 0.25, segment.size = 0.5, segment.alpha = NULL,
+  min.segment.length = 0.5, arrow = NULL, anchor.side = NULL,
+  force = 1, force_pull = 1, max.iter = 2000, nudge_x = 0,
+  nudge_y = 0, xlim = c(NA, NA), ylim = c(NA, NA), na.rm = FALSE,
+  show.legend = NA, direction = c("both", "y", "x"), seed = NA,
+  inherit.aes = TRUE)
 
 geom_text_repel(mapping = NULL, data = NULL, stat = "identity",
   position = "identity", parse = FALSE, ..., box.padding = 0.25,
@@ -72,10 +72,6 @@ passing \code{unit(x, "units")}).}
 
 \item{label.size}{Size of label border, in mm.}
 
-\item{segment.colour, segment.color}{Colour of the line segment. Defaults to the same colour
-as the text. In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.}
-
 \item{segment.size}{Width of line segment connecting the data point to
 the text label, in mm.}
 
@@ -87,6 +83,9 @@ number. Defaults to 0.5. (Default unit is lines, but other units can be
 specified by passing \code{unit(x, "units")}).}
 
 \item{arrow}{specification for arrow heads, as created by \code{\link[grid]{arrow}}}
+
+\item{anchor.side}{string ("top", "right", "bottom", "left") that specifies
+where the line segment is connected to. Default: NULL}
 
 \item{force}{Force of repulsion between overlapping text labels. Defaults
 to 1.}
@@ -120,6 +119,10 @@ a warning.  If \code{TRUE} silently removes missing values.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2]{borders}}.}
+
+\item{segment.colour, segment.color}{Colour of the line segment. Defaults to the same colour
+as the text. In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.}
 }
 \description{
 \code{geom_text_repel} adds text directly to the plot.

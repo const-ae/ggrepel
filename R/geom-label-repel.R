@@ -6,6 +6,8 @@
 #'   to 0.15. (Default unit is lines, but other units can be specified by
 #'   passing \code{unit(x, "units")}).
 #' @param label.size Size of label border, in mm.
+#' @param anchor.side string ("top", "right", "bottom", "left") that specifies
+#'   where the line segment is connected to. Default: NULL
 #' @export
 geom_label_repel <- function(
   mapping = NULL, data = NULL, stat = "identity", position = "identity",
@@ -20,6 +22,7 @@ geom_label_repel <- function(
   segment.alpha = NULL,
   min.segment.length = 0.5,
   arrow = NULL,
+  anchor.side = NULL,
   force = 1,
   force_pull = 1,
   max.iter = 2000,
@@ -59,6 +62,7 @@ geom_label_repel <- function(
       segment.alpha = segment.alpha,
       min.segment.length = to_unit(min.segment.length),
       arrow = arrow,
+      anchor.side = anchor.side,
       na.rm = na.rm,
       force = force,
       force_pull = force_pull,
@@ -102,6 +106,7 @@ GeomLabelRepel <- ggproto(
     segment.alpha = NULL,
     min.segment.length = 0.5,
     arrow = NULL,
+    anchor.side = NULL,
     force = 1,
     force_pull = 1,
     nudge_x = 0,
@@ -164,6 +169,7 @@ GeomLabelRepel <- ggproto(
       segment.alpha = segment.alpha,
       min.segment.length = to_unit(min.segment.length),
       arrow = arrow,
+      anchor.side = anchor.side,
       force = force,
       force_pull = force_pull,
       max.iter = max.iter,
@@ -295,7 +301,8 @@ makeContent.labelrepeltree <- function(x) {
       arrow = x$arrow,
       min.segment.length = x$min.segment.length,
       hjust = x$data$hjust[i],
-      vjust = x$data$vjust[i]
+      vjust = x$data$vjust[i],
+      anchor.side = x$anchor.side
     )
   })
   # Put segment grobs before text grobs, rect grobs before text grobs.
@@ -332,7 +339,8 @@ makeLabelRepelGrobs <- function(
   arrow = NULL,
   min.segment.length = 0.5,
   hjust = 0.5,
-  vjust = 0.5
+  vjust = 0.5,
+  anchor.side = NULL
 ) {
   stopifnot(length(label) == 1)
 
@@ -379,7 +387,19 @@ makeLabelRepelGrobs <- function(
   # original data point to the centroid and the rectangle's edges.
   text_box <- c(x1, y1, x2, y2)
   #int <- intersect_line_rectangle(point_pos, center, c(x1, y1, x2, y2))
-  int <- select_line_connection(point_pos, text_box)
+
+
+
+  if(is.null(anchor.side)){
+    int <- select_line_connection(point_pos, text_box)
+  }else{
+    int <- if(anchor.side == "right") c(x2, (y1 + y2)/2)
+    else if(anchor.side == "bottom") c((x1 + x2)/2, y1)
+    else if(anchor.side == "left") c(x1, (y1 + y2)/2)
+    else if(anchor.side == "top") c((x1 + x2)/2, y2)
+  }
+
+
 
   # Check if the data point is inside the label box.
   point_inside <- FALSE
